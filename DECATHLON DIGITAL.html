@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostureTech : Votre CTO Santé Posturale</title>
+    <style>
+        /* ======================================= */
+        /* Animation de Fond (Thème Sombre: Noir, Violet, Orange) */
+        /* ======================================= */
+        @keyframes darkGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #F8F8F8;
+            /* Dégradé sombre et vibrant */
+            background: linear-gradient(-45deg, #1A0033, #000000, #4B0082, #FF8C00);
+            background-size: 400% 400%;
+            animation: darkGradient 25s ease infinite;
+        }
+
+        /* ======================================= */
+        /* Styles Généraux et Animation de Vue */
+        /* ======================================= */
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 40px 35px;
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(255, 140, 0, 0.35);
+            border: 1px solid #FFD700;
+        }
+
+        h1 {
+            color: #FF8C00;
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #4B0082;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #FFD700;
+            border-left: 6px solid #FF8C00;
+            padding-left: 12px;
+            margin-top: 35px;
+            font-size: 1.7rem;
+        }
+
+        p.intro-text {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #FFD700;
+            margin-bottom: 25px;
+        }
+        
+        /* --- Styles des Sections (Vues) --- */
+        .qcm-section {
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #1A1A1A;
+            margin-top: 20px;
+        }
+        .qcm-section form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            /* align-items: center; */
+        }
+        .qcm-section label {
+            font-size: 1.1rem;
+            color: #F8F8F8;
+            margin-bottom: 5px;
+            display: block; /* Important pour les labels des inputs */
+        }
+        .qcm-section select,
+        .qcm-section input[type="text"],
+        .qcm-section input[type="email"],
+        .qcm-section input[type="tel"],
+        .qcm-section input[type="number"] {
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #2a0033;
+            color: #FFD700;
+            border: 1px solid #FF8C00;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box; /* Inclusion du padding et border dans la width */
+        }
+        .qcm-section input:focus, .qcm-section select:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        /* --- Styles Spécifiques au Profil (Étape 1) --- */
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .error-message {
+            color: #FF4500;
+            margin-top: 5px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        /* --- Boutons Génériques (Submit, Back) --- */
+        .submit-btn {
+            background-color: #FF8C00;
+            color: #1A1A1A;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            margin-right: 15px;
+        }
+        .submit-btn:hover {
+            background-color: #FFD700;
+            transform: translateY(-3px) scale(1.05);
+        }
+        .back-btn {
+            background-color: #A020F0; 
+            color: white;
+            box-shadow: 0 4px 15px rgba(160, 32, 240, 0.4);
+        }
+        .back-btn:hover {
+            background-color: #8A2BE2;
+        }
+
+
+        /* --- Styles Boutons Type d'Entraînement (Vue 3) --- */
+        .training-selection-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .training-type-btn {
+            flex-basis: 45%; 
+            min-width: 180px; 
+            padding: 15px;
+            border: 2px solid #FF8C00; 
+            border-radius: 10px;
+            background-color: #4B0082; 
+            color: #F8F8F8;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+        .training-type-btn strong {
+            color: #FFD700;
+            display: block;
+            margin-top: 5px;
+            font-size: 1.1em;
+        }
+        .training-type-btn:hover {
+            background-color: #A020F0;
+            border-color: #FFD700;
+            transform: translateY(-2px);
+        }
+
+        /* --- Styles Boutons Mouvement Spécifique (Vue 4) --- */
+        .movement-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .custom-movement-btn {
+            flex-basis: 30%; 
+            min-width: 150px; 
+            height: 120px;
+            border: 2px solid #A020F0;
+            border-radius: 12px;
+            background-color: #330066; 
+            color: #FFD700;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .custom-movement-btn:hover {
+            border-color: #FF8C00;
+            background-color: #4B0082;
+            transform: scale(1.05);
+        }
+        /* Style pour les emojis dans les boutons */
+        .custom-movement-btn span {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+
+        /* --- Section des Résultats --- */
+        #result-section {
+            margin-top: 35px;
+            padding: 25px;
+            background-color: #330066;
+            border-radius: 15px;
+            border: 2px solid #FF8C00;
+            text-align: center;
+        }
+        #instructions p, #instructions ol {
+            text-align: left;
+            margin: 20px 0;
+            padding: 0 15px;
+            line-height: 1.6;
+        }
+        #instructions strong {
+            color: #FFD700;
+        }
+        .posture-images {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 25px;
+            gap: 20px;
+        }
+        .posture-image img {
+            width: 260px;
+            height: auto;
+            max-width: 100%;
+            border: 3px solid #FF8C00;
+            border-radius: 12px;
+        }
+        .commercial-link {
+            margin-top: 25px;
+        }
+        .commercial-link a {
+            color: #FFD700;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+        .commercial-link a:hover {
+            color: #FF8C00;
+            text-decoration: underline;
+        }
+
+        /* --- Classes de Transition et Affichage --- */
+        .hidden { display: none; }
+        .active { 
+            display: block; 
+            animation: fadeIn 0.8s ease; 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Media Query pour la réactivité */
+        @media (max-width: 768px) {
+            .container { margin: 20px auto; padding: 25px; }
+            .posture-images { flex-direction: column; align-items: center; }
+            .posture-image img { width: 100%; }
+            .training-type-btn { flex-basis: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> PostureTech : Votre CTO Santé Posturale</h1>
+        <p class="intro-text">Connectez l'informatique au sport pour prévenir les blessures.</p>
+
+        <section id="view-profile" class="active qcm-section">
+            <h2> Étape 1 : Mon Profil Athlétique</h2>
+            <p>Veuillez fournir vos informations pour personnaliser les conseils posturaux.</p>
+            <form id="profile-form">
+                
+                <div class="form-group">
+                    <label for="name">Nom Complet</label>
+                    <input type="text" id="name" name="name" required placeholder="Ex: Ali Ben Said">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="Ex: ali.said@mail.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Téléphone (Format: +216 XX XXX XXX)</label>
+                    <input type="tel" id="phone" name="phone" required 
+                           placeholder="Ex: +216 20 123 456" pattern="\+216\s[0-9]{2}\s[0-9]{3}\s[0-9]{3}">
+                    <div id="phone-error" class="error-message" style="display: none;">Le numéro doit commencer par +216 et respecter le format.</div>
+                </div>
+
+                <div style="display: flex; gap: 20px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="weight">Poids (kg)</label>
+                        <input type="number" id="weight" name="weight" required min="30" max="300" placeholder="Ex: 75">
+                    </div>
+                    
+                    <div class="form-group" style="flex: 1;">
+                        <label for="height">Taille (cm)</label>
+                        <input type="number" id="height" name="height" required min="100" max="250" placeholder="Ex: 180">
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn" style="width: 100%; max-width: 400px; margin: 20px auto;">
+                    Enregistrer et Continuer au Profilage Sportif
+                </button>
+            </form>
+        </section>
+
+        <section id="view-level" class="hidden qcm-section">
+            <h2> Étape 2 : Profilage Sportif - Niveau</h2>
+            <form id="level-form">
+                <label for="level">Quel est votre niveau de pratique actuel ?</label>
+                <select id="level" required style="max-width: 400px;">
+                    <option value="">-- Choisir mon niveau --</option>
+                    <option value="debutant">Débutant (Moins de 6 mois)</option>
+                    <option value="intermediaire">Intermédiaire (1-3 fois/semaine)</option>
+                    <option value="avance">Avancé (Pratique intense/compétitive)</option>
+                </select>
+                <button type="submit" class="submit-btn" style="max-width: 400px;">
+                    Continuer à la recommandation d'entraînement
+                </button>
+            </form>
+            <button type="button" class="submit-btn back-btn" onclick="switchView('view-profile')">Retour au Profil Personnel</button>
+        </section>
+
+        <section id="view-training-type" class="hidden qcm-section">
+            <h2> Étape 3 : Types d'entraînement recommandés</h2>
+            <p id="training-reco-text"></p>
+            <div id="training-selection-container" class="training-selection-container">
+                </div>
+            <button type="button" class="submit-btn back-btn" onclick="switchView('view-level')">Retour au Niveau</button>
+        </section>
+
+        <section id="view-movement" class="hidden qcm-section">
+            <h2> Étape 4 : Sélection du Mouvement</h2>
+            <p id="selected-training-context">
+                Sélectionnez le mouvement que vous souhaitez perfectionner pour obtenir des instructions adaptées à votre profil.
+            </p>
+            <div class="movement-buttons">
+                <button class="custom-movement-btn" data-movement="squat"><span>🦵</span> Squat</button>
+                <button class="custom-movement-btn" data-movement="pompes"><span>💪</span> Pompes</button>
+                <button class="custom-movement-btn" data-movement="yoga"><span>🧘</span> Yoga (Chien Tête en Bas)</button>
+            </div>
+            <button type="button" class="submit-btn back-btn" onclick="switchView('view-training-type')">Retour aux Recommandations</button>
+        </section>
+
+        <section id="result-section" class="hidden">
+            <h2 id="result-title"></h2>
+            
+            <h3> Instructions et Conseils Personnalisés</h3>
+            <div id="instructions"></div>
+
+            <hr>
+
+            <h3> Illustration Posturale</h3>
+            <div class="posture-images">
+                <div class="posture-image">
+                    <h3>✅ Posture Correcte</h3>
+                    <img id="image-correcte" src="" alt="Posture correcte">
+                </div>
+                <div class="posture-image">
+                    <h3>❌ Erreur Courante</h3>
+                    <img id="image-erreur" src="" alt="Erreur courante">
+                </div>
+            </div>
+            
+            <hr>
+
+            <div class="commercial-link">
+                <h3> Équipement Recommandé</h3>
+                <a id="product-link" href="#" target="_blank" rel="noopener noreferrer">
+                    Voir le produit recommandé sur Decathlon
+                </a>
+            </div>
+            
+            <button type="button" class="submit-btn back-btn" onclick="switchView('view-movement')">Choisir un autre mouvement</button>
+        </section>
+    </div>
+
+    <script>
+        // --- Variables Globales ---
+        let userProfile = null; // Nouvelle variable pour le profil personnel
+        let userLevel = '';
+        let selectedTrainingName = '';
+
+        const levelLabels = {
+            debutant: 'Débutant',
+            intermediaire: 'Intermédiaire',
+            avance: 'Avancé',
+        };
+
+        // --- Logique de Recommandation (Étape 3) ---
+        const trainingRecommendations = {
+            debutant: [
+                { name: "Force Fonctionnelle", desc: "Bases, gainage, poids du corps.", icon: "🚶" },
+                { name: "Souplesse & Posture", desc: "Yoga/Pilates pour mobilité.", icon: "🧘" }
+            ],
+            intermediaire: [
+                { name: "Renforcement Musculaire", desc: "Charges modérées.", icon: "💪" },
+                { name: "Cardio HIIT", desc: "Amélioration cardio-respiratoire.", icon: "🏃" }
+            ],
+            avance: [
+                { name: "Hypertrophie / Force Maximale", desc: "Charges lourdes.", icon: "🏋️" },
+                { name: "Endurance Spécifique", desc: "Préparation compétition.", icon: "⚡" }
+            ]
+        };
+        
+        // --- Mouvements et Contenu (Étape 4 & Résultats) ---
+        const movementData = {
+            squat: {
+                title: "Conseils pour le Squat",
+                instructions: `
+                    <p>Le squat est un mouvement fondamental pour renforcer le bas du corps. L'accent est mis sur la **stabilité** et la **profondeur** sans compromettre le dos. </p>
+                    <ol>
+                        <li>**Position Initiale :** Tenez-vous debout, pieds écartés à la largeur des épaules. Les orteils pointent légèrement vers l'extérieur. Gardez la **poitrine haute** et engagez votre ceinture abdominale (**gainage**).</li>
+                        <li>**La Descente (Phase Excentrique) :** Commencez le mouvement en reculant les hanches, comme si vous alliez vous asseoir. **Gardez le dos droit**. Descendez lentement, en veillant à ce que les **genoux s'alignent avec les orteils** (ils ne doivent pas s'affaisser vers l'intérieur). Maintenez le **poids sur les talons**. Descendez au moins jusqu'à ce que vos cuisses soient parallèles au sol.</li>
+                        <li>**La Montée (Phase Concentrique) :** Poussez fort dans les talons pour remonter. Contractez les fessiers en haut du mouvement. **Évitez de verrouiller** vos genoux en position finale.</li>
+                    </ol>
+                `,
+                imageCorrecteSrc: "https://media.tenor.com/pdMmsiutWkcAAAAM/gym.gif", 
+                imageErreurSrc: "https://cdn-assets-eu.frontify.com/s3/frontify-enterprise-files-eu/eyJvYXV0aCI6eyJjbGllbnRfaWQiOiJmcm9udGlmeS1leHBsb3JlciJ9LCJwYXRoIjoiaWhoLWhlYWx0aGNhcmUtYmVyaGFkXC9hY2NvdW50c1wvYzNcLzQwMDA2MjRcL3Byb2plY3RzXC8yMDlcL2Fzc2V0c1wvZmNcLzM5NDc2XC82ZjlhYTk5NWQ2YTVlNmE4NTdiNDQ5ODI5ZTdlYjEwYi0xNjU4MzA4MDYzLmdpZiJ9:ihh-healthcare-berhad:aPP83NGnY4i2Zfb6U5TRZLXGS5keNiV3j7SP-oOxR0g?format=webp", 
+                productLink: "https://www.decathlon.tn/search/?query=bandes+resistance"
+            },
+            pompes: {
+                title: "Conseils pour les Pompes",
+                instructions: `
+                    <p>Les pompes sont excellentes pour le haut du corps et le gainage. L'enjeu est de maintenir une **planche rigide** pendant toute l'exécution. </p>
+                    <ol>
+                        <li>**Position Initiale :** Placez-vous en position de planche. Les **mains** doivent être placées directement **sous les épaules**. Votre corps doit former une **ligne droite** parfaite, des chevilles à la tête. Serrez les abdominaux et les fessiers (**gainage**).</li>
+                        <li>**La Descente (Phase Excentrique) :** Descendez lentement en pliant les coudes. Les **coudes** doivent rester relativement **près du corps** (environ $45^{\circ}$). Descendez jusqu'à ce que votre **poitrine touche presque le sol**.</li>
+                        <li>**La Montée (Phase Concentrique) :** Poussez le sol avec les mains pour remonter. **Gardez le corps rigide** et évitez de laisser la tête ou le bassin se relever avant le reste du corps.</li>
+                    </ol>
+                `,
+                imageCorrecteSrc: "https://www.body-burn.com/wp-content/uploads/2024/03/pompe-exercice-musculation.gif", 
+                imageErreurSrc: "https://www.sport-equipements.fr/wp-content/uploads/2021/09/erreur-pompe-amplitude.gif", 
+                productLink: "https://www.decathlon.tn/search/?query=poignees+pompes"
+            },
+            yoga: {
+                title: "Conseils pour le Yoga (Chien Tête en Bas)",
+                instructions: `
+                    <p>Cette posture (Adho Mukha Svanasana) est essentielle pour étirer et renforcer le corps tout entier. </p>
+                    <ol>
+                        <li>**Position Initiale :** Commencez à quatre pattes. Les mains sont écartées à la largeur des épaules, les doigts bien ouverts.</li>
+                        <li>**Mouvement :** Poussez sur les mains pour lever les hanches vers le plafond. Votre corps devrait former un **V inversé** (ou un **triangle**).</li>
+                        <li>**Alignement et Maintien :** Concentrez-vous à **allonger la colonne vertébrale** (vous pouvez fléchir légèrement les genoux si votre dos s'arrondit). Poussez les **talons vers le sol** (ils n'ont pas besoin de toucher). La tête est relâchée, entre les bras. Respirez profondément.</li>
+                    </ol>
+                `,
+                imageCorrecteSrc: "https://wildyness.com/uploads/0000/145/2024/03/05/espace-regaia-yoga-tunisia.png", 
+                imageErreurSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRifHYnlQF1en4XHluz6Ee9L7O7rAQoh8F_BQ&s", 
+                productLink: "https://www.decathlon.tn/search/?query=tapis+yoga"
+            }
+        };
+
+        // --- Fonctions de Navigation (avec animation) ---
+
+        /**
+         * Change la vue actuelle en cachant toutes les sections et en affichant la cible.
+         * @param {string} viewId - L'ID de la section à afficher (ex: 'view-profile').
+         */
+        function switchView(viewId) {
+            document.querySelectorAll('section').forEach(sec => {
+                // S'assure de cacher correctement toutes les sections
+                sec.className = sec.id === 'result-section' ? 'hidden' : 'hidden qcm-section'; 
+            });
+            const targetSection = document.getElementById(viewId);
+            if (targetSection) {
+                // Applique les classes nécessaires pour l'affichage et l'animation
+                targetSection.className = viewId === 'result-section' ? 'active' : 'active qcm-section'; 
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        // --- Fonctions Principales ---
+
+        function getAltText(type, key) {
+            const mouvement = key.charAt(0).toUpperCase() + key.slice(1);
+            if (type === 'correcte') return `Illustration de la posture correcte pour l'exercice : ${mouvement}`;
+            return `Illustration de l'erreur courante de posture pour l'exercice : ${mouvement}`;
+        }
+
+        function generateTrainingButtons(level) {
+            const container = document.getElementById('training-selection-container');
+            const recoText = document.getElementById('training-reco-text');
+            
+            const levelLabel = levelLabels[level] || level;
+            recoText.innerHTML = `Basé sur votre profil <strong>${levelLabel}</strong>, nous recommandons :`;
+            
+            container.innerHTML = '';
+            
+            trainingRecommendations[level].forEach(reco => {
+                const btn = document.createElement('button');
+                btn.className = 'training-type-btn';
+                btn.type = 'button';
+                btn.innerHTML = `${reco.icon} ${reco.name} <br><strong>(${reco.desc})</strong>`;
+                
+                btn.addEventListener('click', () => {
+                    selectedTrainingName = reco.name;
+                    document.getElementById('selected-training-context').innerHTML = `
+                        Vous avez choisi : <strong>${selectedTrainingName}</strong>.
+                        <br>Sélectionnez le mouvement que vous souhaitez perfectionner pour obtenir des instructions adaptées à votre profil :
+                    `;
+                    switchView('view-movement');
+                });
+                container.appendChild(btn);
+            });
+            switchView('view-training-type');
+        }
+
+
+        function processResults(movement) {
+            const data = movementData[movement];
+            
+            if (!data) {
+                console.error("Données de mouvement introuvables :", movement);
+                return;
+            }
+
+            // Mise à jour de l'affichage
+            document.getElementById('result-title').textContent = data.title;
+            document.getElementById('instructions').innerHTML = data.instructions;
+            
+            // Mise à jour des images et des alt texts
+            document.getElementById('image-correcte').src = data.imageCorrecteSrc;
+            document.getElementById('image-correcte').alt = getAltText('correcte', movement);
+
+            document.getElementById('image-erreur').src = data.imageErreurSrc;
+            document.getElementById('image-erreur').alt = getAltText('erreur', movement);
+            
+            document.getElementById('product-link').href = data.productLink;
+            document.getElementById('product-link').textContent = `Voir les équipements ${movement.toUpperCase()} sur Decathlon`;
+
+            switchView('result-section');
+        }
+
+        // --- Écouteurs d'événements ---
+
+        // 1. Soumission du Profil Personnel (Passage de Vue 1 à Vue 2)
+        document.getElementById('profile-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const phoneInput = document.getElementById('phone');
+            const phoneError = document.getElementById('phone-error');
+            
+            // Validation du pattern HTML5
+            if (!phoneInput.checkValidity()) {
+                phoneError.style.display = 'block';
+                // La validation des champs requis est gérée par le navigateur, 
+                // mais le message d'alerte aide pour le format spécifique.
+                alert("Veuillez vérifier le format du téléphone. Il doit commencer par +216 et respecter le format (Ex: +216 20 123 456).");
+                return;
+            } 
+            
+            // Stockage des données du profil
+            userProfile = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: phoneInput.value,
+                weight: document.getElementById('weight').value,
+                height: document.getElementById('height').value,
+            };
+            
+            phoneError.style.display = 'none';
+            // alert(`Profil de ${userProfile.name} enregistré. Passons à l'Étape 2!`); // Optionnel
+            
+            // Passer à la nouvelle Étape 2 (anciennement Étape 1)
+            switchView('view-level');
+        });
+
+        // 2. Soumission du niveau (Passage de Vue 2 à Vue 3)
+        document.getElementById('level-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const levelSelect = document.getElementById('level');
+            userLevel = levelSelect.value;
+            if (userLevel) {
+                generateTrainingButtons(userLevel);
+            } else {
+                alert("Veuillez choisir votre niveau.");
+            }
+        });
+
+        // 3. Sélection du mouvement (Passage de Vue 4 à Résultats)
+        document.querySelectorAll('.custom-movement-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const movement = this.getAttribute('data-movement');
+                processResults(movement);
+            });
+        });
+
+    </script>
+</body>
+</html>
